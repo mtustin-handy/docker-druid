@@ -4,7 +4,8 @@
 
 Build the docker image locally:
 
-```docker build .
+```
+docker build .
 ```
 
 This will spit out a final image md5 like `d7cb7f998281`. Tag this to
