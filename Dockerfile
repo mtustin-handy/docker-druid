@@ -1,10 +1,15 @@
 FROM ubuntu:14.04
 
+RUN apt-get update
+RUN sudo apt-get -y install software-properties-common python-software-properties
+RUN sudo add-apt-repository -y ppa:webupd8team/java
+RUN sudo add-apt-repository -y ppa:openjdk-r/ppa
+RUN apt-get update
+
 # Java 8
 RUN apt-get install -y software-properties-common \
       && apt-add-repository -y ppa:webupd8team/java \
       && apt-get purge --auto-remove -y software-properties-common \
-      && apt-get update \
       && echo oracle-java-8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
       && apt-get install -y oracle-java8-installer \
       && apt-get install -y oracle-java8-set-default \
@@ -47,7 +52,7 @@ ENV GITHUB_OWNER druid-io
 ENV DRUID_VERSION master
 
 # trigger rebuild only if branch changed
-ADD https://api.github.com/repos/$GITHUB_OWNER/druid/git/refs/heads/$DRUID_VERSION druid-version.json
+ADD druid-version.json druid-version.json
 RUN git clone -q --branch $DRUID_VERSION --depth 1 https://github.com/$GITHUB_OWNER/druid.git /tmp/druid
 WORKDIR /tmp/druid
 # package and install Druid locally
@@ -103,4 +108,4 @@ EXPOSE 3306
 EXPOSE 2181 2888 3888
 
 WORKDIR /var/lib/druid
-ENTRYPOINT export HOSTIP="$(resolveip -s $HOSTNAME)" && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+ENTRYPOINT export HOSTIP="192.168.99.100" && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

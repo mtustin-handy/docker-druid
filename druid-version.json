@@ -1,0 +1,9 @@
+{
+  "ref": "refs/heads/master",
+  "url": "https://api.github.com/repos/druid-io/druid/git/refs/heads/master",
+  "object": {
+    "sha": "8cac7105462ff244f2ca52159f3d351215de1f4b",
+    "type": "commit",
+    "url": "https://api.github.com/repos/druid-io/druid/git/commits/8cac7105462ff244f2ca52159f3d351215de1f4b"
+  }
+}
