@@ -5,6 +5,7 @@ RUN sudo apt-get -y install software-properties-common python-software-propertie
 RUN sudo add-apt-repository -y ppa:webupd8team/java
 RUN sudo add-apt-repository -y ppa:openjdk-r/ppa
 RUN apt-get update
+RUN apt-get -y install sasl2-bin
 
 # Java 8
 RUN apt-get install -y software-properties-common \
@@ -90,6 +91,12 @@ RUN /etc/init.d/mysql start \
       && mysql -u root druid < sample-data.sql \
       && /etc/init.d/mysql stop
 
+
+WORKDIR /usr/local
+RUN wget http://static.druid.io/tranquility/releases/tranquility-distribution-0.8.1.tgz
+RUN tar xzvf tranquility-distribution-0.8.1.tgz
+ADD server.json tranquility-distribution-0.8.1/conf/server.json
+
 # Setup supervisord
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
@@ -100,12 +107,14 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # - 8090: HTTP (overlord)
 # - 3306: MySQL
 # - 2181 2888 3888: ZooKeeper
+# EXPOSE 9889 - tranquility
 EXPOSE 8081
 EXPOSE 8082
 EXPOSE 8083
 EXPOSE 8090
 EXPOSE 3306
 EXPOSE 2181 2888 3888
+EXPOSE 9889
 
 WORKDIR /var/lib/druid
 ENTRYPOINT export HOSTIP="192.168.99.100" && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
