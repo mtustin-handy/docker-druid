@@ -3,16 +3,22 @@
       {
          "spec" : {
             "dataSchema" : {
-               "dataSource" : "foo",
+               "dataSource" : "unfilledstatus",
                "metricsSpec" : [
                   {
-                     "type" : "count",
-                     "name" : "count"
+                     "fieldName" : "unfilledstatus",
+                     "type" : "longSum",
+                     "name" : "unfilledstatus"
                   },
                   {
-                     "fieldName" : "x",
-                     "type" : "doubleSum",
-                     "name" : "x"
+                     "fieldName" : "unfilled_proxy_bookings",
+                     "type" : "longSum",
+                     "name" : "unfilled_proxy_bookings"
+                  },
+                  {
+                     "fieldName" : "unfilled_bookings",
+                     "type" : "longSum",
+                     "name" : "unfilled_bookings"
                   }
                ],
                "granularitySpec" : {
@@ -30,9 +36,10 @@
                      },
                      "dimensionsSpec" : {
                         "dimensions" : [
-                           "dim1",
-                           "dim2",
-                           "dim3"
+                           "region_id",
+                           "service_id",
+                           "date_start",
+                           "run_at"
                         ]
                      }
                   }
